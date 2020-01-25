@@ -3,11 +3,8 @@ LINUX_SRC_DIR = linux-$(LINUX_VERSION)
 LINUX_TARBALL = $(LINUX_SRC_DIR).tar.xz
 LINUX_SRC_URL = https://cdn.kernel.org/pub/linux/kernel/v5.x/$(LINUX_TARBALL)
 
-crayon.qcow2: $(LINUX_SRC_DIR)/arch/x86/boot/bzImage
-	qemu-img create \
-		-f qcow2 \
-		crayon.qcow2 \
-		1G
+root.qcow2: $(LINUX_SRC_DIR)/arch/x86/boot/bzImage create-root-image
+	sudo ./create-root-image root.qcow2 $(LINUX_SRC_DIR)/arch/x86/boot/bzImage
 
 $(LINUX_SRC_DIR)/arch/x86/boot/bzImage: $(LINUX_SRC_DIR)/.config $(LINUX_SRC_DIR)/Makefile
 	make -C $(LINUX_SRC_DIR) -j $$(nproc)

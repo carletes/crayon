@@ -1,0 +1,75 @@
+#!/usr/bin/env bash
+
+image="$1"
+kernel="$2"
+
+if [ -z "$1" ] || [ -z "$kernel" ] ; then
+  me="$(basename "$0")"
+  echo "Usage: $me <image> <kernel>"
+  exit 1
+fi
+
+set -e
+
+dev=/dev/nbd0
+root=/mnt/crayon
+
+root_mounted=0
+dev_connected=0
+
+function cleanup () {
+  set +e
+  if [ $root_mounted = 1 ] ; then
+    umount "$root"
+  fi
+
+  if [ $dev_connected = 1 ] ; then
+    qemu-nbd --disconnect $dev
+  fi
+}
+
+trap cleanup EXIT
+
+set -x
+
+qemu-img create -f qcow2 "$image" 1G
+
+modprobe nbd
+qemu-nbd \
+  --connect=$dev \
+  --fork \
+  --verbose \
+  "$image"
+dev_connected=1
+
+parted --script $dev \
+  mklabel msdos \
+  unit % \
+  mkpart primary ext2 1MiB 100 \
+  set 1 boot on
+
+mkfs.ext4 -F ${dev}p1
+
+mkdir -p $root
+mount ${dev}p1 "$root"
+root_mounted=1
+
+cp "$kernel" ${root}/bzImage
+chmod 0400 ${root}/bzImage
+mkdir ${root}/dev
+
+# mkdir -p ${root}/extlinux
+# cat > ${root}/extlinux/extlinux.conf <<EOF
+cat > ${root}/extlinux.conf <<EOF
+serial 0 115200
+
+default linux
+
+label linux
+  kernel /bzImage
+  append console=ttyS0,115200n8 root=/dev/vda1 ro
+EOF
+
+extlinux --install $root
+
+ls -lR $root
