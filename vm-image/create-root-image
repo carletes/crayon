@@ -57,14 +57,18 @@ root_mounted=1
 cp "$kernel" ${root}/bzImage
 chmod 0400 ${root}/bzImage
 mkdir ${root}/dev
+mkdir ${root}/proc
 
-# mkdir -p ${root}/extlinux
-# cat > ${root}/extlinux/extlinux.conf <<EOF
+# debootstrap \
+#   --variant=minbase \
+#   --include=iproute2,iputils-ping,isc-dhcp-client,procps \
+#   --verbose \
+#   stable \
+#   $root
+
 cat > ${root}/extlinux.conf <<EOF
 serial 0 115200
-
 default linux
-
 label linux
   kernel /bzImage
   append console=ttyS0,115200n8 root=/dev/vda1 ro

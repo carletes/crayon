@@ -3,6 +3,11 @@ LINUX_SRC_DIR = linux-$(LINUX_VERSION)
 LINUX_TARBALL = $(LINUX_SRC_DIR).tar.xz
 LINUX_SRC_URL = https://cdn.kernel.org/pub/linux/kernel/v5.x/$(LINUX_TARBALL)
 
+.PHONY: run
+
+run: root.qcow2
+	./run-image root.qcow2
+
 root.qcow2: $(LINUX_SRC_DIR)/arch/x86/boot/bzImage create-root-image
 	sudo ./create-root-image root.qcow2 $(LINUX_SRC_DIR)/arch/x86/boot/bzImage
 
