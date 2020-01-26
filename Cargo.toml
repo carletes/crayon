@@ -7,3 +7,6 @@ edition = "2018"
 # [[bin]]
 # name = "crayon-init"
 # path = "path/to/main.rs"
+
+[dependencies]
+nix = "0.16.1"
