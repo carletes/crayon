@@ -59,6 +59,9 @@ chmod 0400 ${root}/bzImage
 mkdir ${root}/dev
 mkdir ${root}/proc
 
+mkdir ${root}/sbin
+cp target/x86_64-unknown-linux-musl/release/crayon-init ${root}/sbin/
+
 # debootstrap \
 #   --variant=minbase \
 #   --include=iproute2,iputils-ping,isc-dhcp-client,procps \
@@ -71,7 +74,7 @@ serial 0 115200
 default linux
 label linux
   kernel /bzImage
-  append console=ttyS0,115200n8 root=/dev/vda1 ro
+  append console=ttyS0,115200n8 root=/dev/vda1 init=/sbin/crayon-init ro
 EOF
 
 extlinux --install $root
