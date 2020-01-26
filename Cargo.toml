@@ -1,0 +1,9 @@
+[package]
+name = "crayon"
+version = "0.1.0"
+authors = ["Carlos Valiente <carlos@pepelabs.net>"]
+edition = "2018"
+
+# [[bin]]
+# name = "crayon-init"
+# path = "path/to/main.rs"
