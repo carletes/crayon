@@ -42,11 +42,14 @@ qemu-nbd \
   "$image"
 dev_connected=1
 
-parted --script $dev \
-  mklabel msdos \
-  unit % \
-  mkpart primary ext2 1MiB 100 \
-  set 1 boot on
+cat /usr/lib/syslinux/mbr/mbr.bin > $dev
+
+sfdisk $dev <<EOT
+label: dos
+type=83,bootable
+EOT
+
+fdisk -l $dev
 
 mkfs.ext4 -F ${dev}p1
 
