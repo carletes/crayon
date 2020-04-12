@@ -1,4 +1,4 @@
-LINUX_VERSION = 5.4.14
+LINUX_VERSION = 5.4.31
 LINUX_SRC_DIR = linux-$(LINUX_VERSION)
 LINUX_TARBALL = $(LINUX_SRC_DIR).tar.xz
 LINUX_SRC_URL = https://cdn.kernel.org/pub/linux/kernel/v5.x/$(LINUX_TARBALL)
