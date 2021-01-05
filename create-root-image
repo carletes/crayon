@@ -42,7 +42,8 @@ qemu-nbd \
   "$image"
 dev_connected=1
 
-cat /usr/lib/syslinux/mbr/mbr.bin > $dev
+mbr_path=${SYSLINUX_MBR_PATH:-/usr/lib/syslinux/mbr/mbr.bin}
+cat $mbr_path > $dev
 
 sfdisk $dev <<EOT
 label: dos

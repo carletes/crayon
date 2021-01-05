@@ -9,7 +9,7 @@ run: root.qcow2
 	./run-image root.qcow2
 
 root.qcow2: $(LINUX_SRC_DIR)/arch/x86/boot/bzImage create-root-image crayon-bin
-	sudo ./create-root-image root.qcow2 $(LINUX_SRC_DIR)/arch/x86/boot/bzImage
+	sudo --preserve-env=SYSLINUX_MBR_PATH ./create-root-image root.qcow2 $(LINUX_SRC_DIR)/arch/x86/boot/bzImage
 
 $(LINUX_SRC_DIR)/arch/x86/boot/bzImage: $(LINUX_SRC_DIR)/.config $(LINUX_SRC_DIR)/Makefile
 	make -C $(LINUX_SRC_DIR) -j $$(nproc)
