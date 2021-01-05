@@ -12,6 +12,8 @@ pkgs.mkShell {
     pkgs.gnumake
     pkgs.gnutar
     pkgs.libelf
+    pkgs.ncurses
+    pkgs.pkg-config
     pkgs.qemu
     pkgs.syslinux
     pkgs.utillinuxCurses
