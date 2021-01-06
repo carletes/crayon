@@ -20,6 +20,9 @@ pkgs.mkShell {
     pkgs.wget
 
     rust
+    pkgs.clippy
+    pkgs.rls
+    pkgs.rustfmt
 
     pkgs.bashInteractive
   ];

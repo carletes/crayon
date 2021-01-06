@@ -37,6 +37,5 @@ let
 
   targets = [ "x86_64-unknown-linux-musl" ];
   chan = pkgs.rustChannelOfTargets channel date targets;
-
 in
 chan
